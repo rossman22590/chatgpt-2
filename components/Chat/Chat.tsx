@@ -1,19 +1,20 @@
 import { Message, OpenAIModel, OpenAIModelNames } from "@/types";
 import { FC, useEffect, useRef } from "react";
-import { ModelSelect } from "./ModelSelect";
 import { ChatInput } from "./ChatInput";
 import { ChatLoader } from "./ChatLoader";
 import { ChatMessage } from "./ChatMessage";
+import { ModelSelect } from "./ModelSelect";
 
 interface Props {
   model: OpenAIModel;
   messages: Message[];
   loading: boolean;
+  lightMode: "light" | "dark";
   onSend: (message: Message) => void;
   onSelect: (model: OpenAIModel) => void;
 }
 
-export const Chat: FC<Props> = ({ model, messages, loading, onSend, onSelect }) => {
+export const Chat: FC<Props> = ({ model, messages, loading, lightMode, onSend, onSelect }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -35,16 +36,19 @@ export const Chat: FC<Props> = ({ model, messages, loading, onSend, onSelect }) 
             />
           </div>
 
-          <div className="flex-1 text-4xl text-center text-neutral-300 pt-[280px]">Very ChatGPT</div>
+          <div className="flex-1 text-4xl text-center text-neutral-300 pt-[280px]">very chatgpt</div>
         </>
       ) : (
         <>
           <div className="flex-1 overflow-auto">
-            <div className="text-center py-3 dark:bg-[#434654] dark:text-neutral-300 text-neutral-500 text-sm border border-b-neutral-300 dark:border-none">Model: {OpenAIModelNames[model]}</div>
+            <div className="text-center py-3 dark:bg-[#444654] dark:text-neutral-300 text-neutral-500 text-sm border border-b-neutral-300 dark:border-none">Model: {OpenAIModelNames[model]}</div>
 
             {messages.map((message, index) => (
               <div key={index}>
-                <ChatMessage message={message} />
+                <ChatMessage
+                  message={message}
+                  lightMode={lightMode}
+                />
               </div>
             ))}
             {loading && <ChatLoader />}
