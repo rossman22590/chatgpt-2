@@ -68,7 +68,6 @@ export default function Home() {
 
           updatedConversation = {
             ...updatedConversation,
-            name: message.content,
             messages: updatedMessages
           };
 
@@ -122,12 +121,14 @@ export default function Home() {
   };
 
   const handleRenameConversation = (conversation: Conversation, name: string) => {
+    const updatedConversation = {
+      ...conversation,
+      name
+    };
+
     const updatedConversations = conversations.map((c) => {
-      if (c.id === conversation.id) {
-        return {
-          ...c,
-          name
-        };
+      if (c.id === updatedConversation.id) {
+        return updatedConversation;
       }
 
       return c;
@@ -136,11 +137,8 @@ export default function Home() {
     setConversations(updatedConversations);
     localStorage.setItem("conversationHistory", JSON.stringify(updatedConversations));
 
-    setSelectedConversation({
-      ...conversation,
-      name
-    });
-    localStorage.setItem("selectedConversation", JSON.stringify(selectedConversation));
+    setSelectedConversation(updatedConversation);
+    localStorage.setItem("selectedConversation", JSON.stringify(updatedConversation));
   };
 
   const handleNewConversation = () => {
@@ -245,7 +243,8 @@ export default function Home() {
             />
           ) : (
             <IconArrowBarRight
-              className="absolute top-2 left-4 text-black dark:text-white cursor-pointer hover:text-gray-400 dark:hover:text-gray-300"
+              className="absolute top-1 left-4 text-black dark:text-white cursor-pointer hover:text-gray-400 dark:hover:text-gray-300"
+              size={32}
               onClick={() => setShowSidebar(!showSidebar)}
             />
           )}
