@@ -8,12 +8,13 @@ import { ModelSelect } from "./ModelSelect";
 interface Props {
   model: OpenAIModel;
   messages: Message[];
-  messageIsStreaming: boolean,
+  messageIsStreaming: boolean;
   loading: boolean;
   lightMode: "light" | "dark";
   onSend: (message: Message) => void;
   onSelect: (model: OpenAIModel) => void;
 }
+
 export const Chat: FC<Props> = ({ model, messages, messageIsStreaming, loading, lightMode, onSend, onSelect }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -56,8 +57,11 @@ export const Chat: FC<Props> = ({ model, messages, messageIsStreaming, loading, 
         )}
       </div>
 
-      <div className="h-[80px] sm:h-[140px] w-[340px] sm:w-[400px] md:w-[500px] lg:w-[700px] xl:w-[800px] mx-auto">
-        <ChatInput messageIsStreaming={messageIsStreaming} onSend={onSend} />
+      <div className="h-[100px] w-[340px] sm:w-[400px] md:w-[500px] lg:w-[700px] xl:w-[800px] mx-auto">
+        <ChatInput
+          messageIsStreaming={messageIsStreaming}
+          onSend={onSend}
+        />
       </div>
     </div>
   );
