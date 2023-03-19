@@ -3,6 +3,7 @@ import { Sidebar } from "@/components/Sidebar/Sidebar";
 import { Conversation, Message, OpenAIModel } from "@/types";
 import { IconArrowBarRight } from "@tabler/icons-react";
 import Head from "next/head";
+import Script from "next/script";
 import { useEffect, useState } from "react";
 
 export default function Home() {
@@ -179,7 +180,7 @@ export default function Home() {
     } else {
       setSelectedConversation({
         id: 1,
-        name: "",
+        name: "New conversation",
         messages: []
       });
       localStorage.removeItem("selectedConversation");
@@ -226,7 +227,7 @@ export default function Home() {
         <title>very chatgpt</title>
         <meta
           name="description"
-          content="An advanced chatbot starter kit for OpenAI's chat model using Next.js, TypeScript, and Tailwind CSS."
+          content="very chatgpt clone"
         />
         <meta
           name="viewport"
@@ -237,6 +238,12 @@ export default function Home() {
           href="/favicon.ico"
         />
       </Head>
+      <Script
+        data-website-id="2b5ee262-7ee0-4848-a3af-3d1a5a19ee0c"
+        src="https://a.umarhadi.dev/umami.js"
+        async
+        defer
+      />
 
       {selectedConversation && (
         <div className={`flex h-screen text-white ${lightMode}`}>
