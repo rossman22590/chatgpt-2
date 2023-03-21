@@ -14,7 +14,7 @@ export const SystemPrompt: FC<Props> = ({ conversation, onChangePrompt }) => {
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const value = e.target.value;
-        const maxLength = 4000;
+        const maxLength = 10000;
 
         if (value.length > maxLength) {
             alert(`Prompt limit is ${maxLength} characters`);
