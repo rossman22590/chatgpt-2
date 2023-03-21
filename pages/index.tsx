@@ -5,7 +5,6 @@ import { Conversation, Message, OpenAIModel, OpenAIModelID, OpenAIModels } from 
 import { cleanConversationHistory, cleanSelectedConversation } from "@/utils/app";
 import { IconArrowBarLeft, IconArrowBarRight } from "@tabler/icons-react";
 import Head from "next/head";
-import Script from "next/script";
 import { useEffect, useState } from "react";
 
 export default function Home() {
@@ -17,17 +16,32 @@ export default function Home() {
   const [messageIsStreaming, setMessageIsStreaming] = useState<boolean>(false);
   const [showSidebar, setShowSidebar] = useState<boolean>(true);
   const [apiKey, setApiKey] = useState<string>("");
+  const [messageError, setMessageError] = useState<boolean>(false);
+  const [modelError, setModelError] = useState<boolean>(false);
 
-  const handleSend = async (message: Message) => {
+  const handleSend = async (message: Message, isResend: boolean) => {
     if (selectedConversation) {
-      let updatedConversation: Conversation = {
-        ...selectedConversation,
-        messages: [...selectedConversation.messages, message]
-      };
+      let updatedConversation: Conversation;
+
+      if (isResend) {
+        const updatedMessages = [...selectedConversation.messages];
+        updatedMessages.pop();
+
+        updatedConversation = {
+          ...selectedConversation,
+          messages: [...updatedMessages, message]
+        };
+      } else {
+        updatedConversation = {
+          ...selectedConversation,
+          messages: [...selectedConversation.messages, message]
+        };
+      }
 
       setSelectedConversation(updatedConversation);
       setLoading(true);
       setMessageIsStreaming(true);
+      setMessageError(false);
 
       const response = await fetch("/api/chat", {
         method: "POST",
@@ -43,6 +57,8 @@ export default function Home() {
 
       if (!response.ok) {
         setLoading(false);
+        setMessageIsStreaming(false);
+        setMessageError(true);
         return;
       }
 
@@ -51,6 +67,8 @@ export default function Home() {
       if (!data) {
         setLoading(false);
         setMessageIsStreaming(false);
+        setMessageError(true);
+
         return;
       }
 
@@ -218,25 +236,30 @@ export default function Home() {
     localStorage.setItem("apiKey", apiKey);
   };
 
-  const fetchModels = async () => {
-    setLoading(true);
-
+  const fetchModels = async (key: string) => {
     const response = await fetch("/api/models", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        key: apiKey
+        key
       })
     });
-    const data = await response.json();
 
-    if (data) {
-      setModels(data);
+    if (!response.ok) {
+      setModelError(true);
+      return;
     }
 
-    setLoading(false);
+    const data = await response.json();
+
+    if (!data) {
+      setModelError(true);
+      return;
+    }
+
+    setModels(data);
   };
 
   useEffect(() => {
@@ -245,7 +268,7 @@ export default function Home() {
       setLightMode(theme as "dark" | "light");
     }
 
-    const apiKey = localStorage.getItem("apiKey");
+    const apiKey = localStorage.getItem("apiKey") || "";
     if (apiKey) {
       setApiKey(apiKey);
     }
@@ -275,7 +298,7 @@ export default function Home() {
       });
     }
 
-    fetchModels();
+    fetchModels(apiKey);
   }, []);
 
   return (
@@ -295,12 +318,6 @@ export default function Home() {
           href="/favicon.ico"
         />
       </Head>
-      <Script
-        data-website-id="2b5ee262-7ee0-4848-a3af-3d1a5a19ee0c"
-        src="https://a.umarhadi.dev/umami.js"
-        async
-        defer
-      />
       {selectedConversation && (
         <div className={`flex flex-col h-screen w-screen text-white ${lightMode}`}>
           <div className="sm:hidden w-full fixed top-0">
@@ -343,6 +360,8 @@ export default function Home() {
             <Chat
               conversation={selectedConversation}
               messageIsStreaming={messageIsStreaming}
+              modelError={modelError}
+              messageError={messageError}
               models={models}
               loading={loading}
               lightMode={lightMode}
