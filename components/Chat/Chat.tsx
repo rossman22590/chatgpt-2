@@ -1,5 +1,5 @@
 import { Conversation, KeyValuePair, Message, OpenAIModel } from "@/types";
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, MutableRefObject, useEffect, useRef, useState } from 'react';
 import { ChatInput } from "./ChatInput";
 import { ChatLoader } from "./ChatLoader";
 import { ChatMessage } from "./ChatMessage";
@@ -17,9 +17,10 @@ interface Props {
   lightMode: "light" | "dark";
   onSend: (message: Message, isResend: boolean) => void;
   onUpdateConversation: (conversation: Conversation, data: KeyValuePair) => void;
+  stopConversationRef: MutableRefObject<boolean>
 }
 
-export const Chat: FC<Props> = ({ conversation, models, messageIsStreaming, modelError, messageError, loading, lightMode, onSend, onUpdateConversation }) => {
+export const Chat: FC<Props> = ({ conversation, models, messageIsStreaming, modelError, messageError, loading, lightMode, onSend, onUpdateConversation, stopConversationRef }) => {
   const [currentMessage, setCurrentMessage] = useState<Message>();
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -79,7 +80,7 @@ export const Chat: FC<Props> = ({ conversation, models, messageIsStreaming, mode
                 {loading && <ChatLoader />}
 
                 <div
-                  className="bg-white dark:bg-[#343541] h-[113px] sm:h-[162px]"
+                  className="bg-white dark:bg-[#343541] h-[162px]"
                   ref={messagesEndRef}
                 />
               </>
@@ -96,6 +97,7 @@ export const Chat: FC<Props> = ({ conversation, models, messageIsStreaming, mode
             />
           ) : (
             <ChatInput
+              stopConversationRef={stopConversationRef}
               messageIsStreaming={messageIsStreaming}
               onSend={(message) => {
                 setCurrentMessage(message);
