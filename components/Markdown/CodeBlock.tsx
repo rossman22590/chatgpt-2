@@ -1,8 +1,8 @@
+import { generateRandomString, programmingLanguages } from "@/utils/app/data";
+import { IconDownload } from "@tabler/icons-react";
 import { FC, useState } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark, oneLight } from "react-syntax-highlighter/dist/cjs/styles/prism";
-import { IconDownload } from '@tabler/icons-react';
-import { generateRandomString, programmingLanguages } from '@/utils/app/data';
 
 interface Props {
     language: string;
@@ -14,6 +14,10 @@ export const CodeBlock: FC<Props> = ({ language, value, lightMode }) => {
     const [buttonText, setButtonText] = useState("Copy code");
 
     const copyToClipboard = () => {
+        if (!navigator.clipboard || !navigator.clipboard.writeText) {
+            return;
+        }
+
         navigator.clipboard.writeText(value).then(() => {
             setButtonText("Copied!");
 
@@ -23,9 +27,9 @@ export const CodeBlock: FC<Props> = ({ language, value, lightMode }) => {
         });
     };
     const downloadAsFile = () => {
-        const fileExtension = programmingLanguages[language] || '.file';
+        const fileExtension = programmingLanguages[language] || ".file";
         const suggestedFileName = `file-${generateRandomString(3, true)}${fileExtension}`;
-        const fileName = window.prompt('Enter file name', suggestedFileName);
+        const fileName = window.prompt("Enter file name", suggestedFileName);
 
         if (!fileName) {
             // user pressed cancel on prompt
