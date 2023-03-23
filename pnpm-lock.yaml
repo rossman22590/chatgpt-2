@@ -12,7 +12,7 @@ specifiers:
   autoprefixer: ^10.4.14
   eslint: 8.36.0
   eslint-config-next: 13.2.4
-  eventsource-parser: ^0.1.0
+  eventsource-parser: ^1.0.0
   next: 13.2.4
   openai: ^3.2.1
   postcss: ^8.4.21
@@ -33,7 +33,7 @@ dependencies:
   '@vercel/analytics': 0.1.11_react@18.2.0
   eslint: 8.36.0
   eslint-config-next: 13.2.4_j4766f7ecgqbon3u7zlxn5zszu
-  eventsource-parser: 0.1.0
+  eventsource-parser: 1.0.0
   next: 13.2.4_biqbaboplfbrettd7655fr4n2y
   openai: 3.2.1
   react: 18.2.0
@@ -1280,8 +1280,8 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: false
 
-  /eventsource-parser/0.1.0:
-    resolution: {integrity: sha512-M9QjFtEIkwytUarnx113HGmgtk52LSn3jNAtnWKi3V+b9rqSfQeVdLsaD5AG/O4IrGQwmAAHBIsqbmURPTd2rA==}
+  /eventsource-parser/1.0.0:
+    resolution: {integrity: sha512-9jgfSCa3dmEme2ES3mPByGXfgZ87VbP97tng1G2nWwWx6bV2nYxm2AWCrbQjXToSe+yYlqaZNtxffR9IeQr95g==}
     engines: {node: '>=14.18'}
     dev: false
 
