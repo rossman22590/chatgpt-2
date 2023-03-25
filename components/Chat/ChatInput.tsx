@@ -1,11 +1,12 @@
 import { Message, OpenAIModel, OpenAIModelID } from "@/types";
 import { IconPlayerStop, IconSend } from "@tabler/icons-react";
-import { FC, KeyboardEvent, MutableRefObject, useEffect, useRef, useState } from "react";
+import { FC, KeyboardEvent, MutableRefObject, useEffect, useState } from "react";
 
 interface Props {
   messageIsStreaming: boolean;
-  onSend: (message: Message) => void;
   model: OpenAIModel;
+  onSend: (message: Message) => void;
+  onRegenerate: () => void;
   stopConversationRef: MutableRefObject<boolean>;
   textareaRef: MutableRefObject<HTMLTextAreaElement | null>;
 }
