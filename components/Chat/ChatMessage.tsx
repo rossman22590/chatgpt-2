@@ -84,8 +84,9 @@ export const ChatMessage: FC<Props> = ({ message, messageIndex, lightMode, onEdi
 
                   <div className="flex mt-10 justify-center space-x-4">
                     <button
-                      className="h-[40px] bg-blue-500 text-white rounded-md px-4 py-1 text-sm font-medium hover:bg-blue-600"
+                      className="h-[40px] bg-blue-500 text-white rounded-md px-4 py-1 text-sm font-medium enabled:hover:bg-blue-600 disabled:opacity-50"
                       onClick={handleEditMessage}
+                      disabled={messageContent.trim().length <= 0}
                     >
                       Save & Submit
                     </button>
@@ -104,8 +105,8 @@ export const ChatMessage: FC<Props> = ({ message, messageIndex, lightMode, onEdi
                 <div className="prose dark:prose-invert whitespace-pre-wrap">{message.content}</div>
               )}
 
-              {isHovering && !isEditing && (
-                <button className="absolute right-[-20px] top-[26px]">
+              {(isHovering || window.innerWidth < 640) && !isEditing && (
+                <button className={`absolute ${window.innerWidth < 640 ? "right-1 bottom-1" : "right-[-20px] top-[26px]"}`}>
                   <IconEdit
                     size={20}
                     className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
