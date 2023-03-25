@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: very-chatgpt
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  namespace: very-chatgpt
+  name: very-chatgpt
+type: Opaque
+data:
+  OPENAI_API_KEY: <base64 encoded key>
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: very-chatgpt
+  name: very-chatgpt
+  labels:
+    app: very-chatgpt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: very-chatgpt
+  template:
+    metadata:
+      labels:
+        app: very-chatgpt
+    spec:
+      containers:
+        - name: very-chatgpt
+          image: <docker user>/very-chatgpt:latest
+          resources: {}
+          ports:
+            - containerPort: 3000
+          env:
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: very-chatgpt
+                  key: OPENAI_API_KEY
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: very-chatgpt
+  name: very-chatgpt
+  labels:
+    app: very-chatgpt
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 3000
+  selector:
+    app: very-chatgpt
+  type: ClusterIP
