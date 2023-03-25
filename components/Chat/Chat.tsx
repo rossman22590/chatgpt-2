@@ -1,10 +1,9 @@
 import { Conversation, KeyValuePair, Message, OpenAIModel } from "@/types";
-import { FC, MutableRefObject, useEffect, useRef, useState } from "react";
+import { FC, MutableRefObject, useCallback, useEffect, useRef, useState } from "react";
 import { ChatInput } from "./ChatInput";
 import { ChatLoader } from "./ChatLoader";
 import { ChatMessage } from "./ChatMessage";
 import { ModelSelect } from "./ModelSelect";
-import { Regenerate } from "./Regenerate";
 import { SystemPrompt } from "./SystemPrompt";
 
 interface Props {
@@ -17,15 +16,13 @@ interface Props {
   messageError: boolean;
   loading: boolean;
   lightMode: "light" | "dark";
-  onSend: (message: Message, isResend: boolean) => void;
+  onSend: (message: Message, deleteCount?: number) => void;
   onUpdateConversation: (conversation: Conversation, data: KeyValuePair) => void;
   onEditMessage: (message: Message, messageIndex: number) => void;
-  onDeleteMessage: (message: Message, messageIndex: number) => void;
-  onRegenerate: () => void;
   stopConversationRef: MutableRefObject<boolean>;
 }
 
-export const Chat: FC<Props> = ({ conversation, models, apiKey, serverSideApiKeyIsSet, messageIsStreaming, modelError, messageError, loading, lightMode, onSend, onUpdateConversation, onEditMessage, onDeleteMessage, onRegenerate, stopConversationRef }) => {
+export const Chat: FC<Props> = ({ conversation, models, apiKey, serverSideApiKeyIsSet, messageIsStreaming, modelError, messageError, loading, lightMode, onSend, onUpdateConversation, onEditMessage, stopConversationRef }) => {
   const [currentMessage, setCurrentMessage] = useState<Message>();
   const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
 
@@ -33,16 +30,17 @@ export const Chat: FC<Props> = ({ conversation, models, apiKey, serverSideApiKey
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const scrollToBottom = () => {
+  const scrollToBottom = useCallback(() => {
     if (autoScrollEnabled) {
-      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+      textareaRef.current?.focus();
     }
-  };
+  }, [autoScrollEnabled]);
 
   const handleScroll = () => {
     if (chatContainerRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = chatContainerRef.current;
-      const bottomTolerance = 30;
+      const bottomTolerance = 5;
 
       if (scrollTop + clientHeight < scrollHeight - bottomTolerance) {
         setAutoScrollEnabled(false);
@@ -54,8 +52,8 @@ export const Chat: FC<Props> = ({ conversation, models, apiKey, serverSideApiKey
 
   useEffect(() => {
     scrollToBottom();
-    textareaRef.current?.focus();
-  }, [conversation.messages]);
+    setCurrentMessage(conversation.messages[conversation.messages.length - 2]);
+  }, [conversation.messages, scrollToBottom]);
 
   useEffect(() => {
     const chatContainer = chatContainerRef.current;
@@ -120,7 +118,6 @@ export const Chat: FC<Props> = ({ conversation, models, apiKey, serverSideApiKey
                     messageIndex={index}
                     lightMode={lightMode}
                     onEditMessage={onEditMessage}
-                    onDeleteMessage={onDeleteMessage}
                   />
                 ))}
 
@@ -134,27 +131,22 @@ export const Chat: FC<Props> = ({ conversation, models, apiKey, serverSideApiKey
             )}
           </div>
 
-          {messageError ? (
-            <Regenerate
-              onRegenerate={() => {
-                if (currentMessage) {
-                  onSend(currentMessage, true);
-                }
-              }}
-            />
-          ) : (
-            <ChatInput
-              stopConversationRef={stopConversationRef}
-              textareaRef={textareaRef}
-              messageIsStreaming={messageIsStreaming}
-              model={conversation.model}
-              onSend={(message) => {
-                setCurrentMessage(message);
-                onSend(message, false);
-              }}
-              onRegenerate={onRegenerate}
-            />
-          )}
+          <ChatInput
+            stopConversationRef={stopConversationRef}
+            textareaRef={textareaRef}
+            messageIsStreaming={messageIsStreaming}
+            messages={conversation.messages}
+            model={conversation.model}
+            onSend={(message) => {
+              setCurrentMessage(message);
+              onSend(message);
+            }}
+            onRegenerate={() => {
+              if (currentMessage) {
+                onSend(currentMessage, 2);
+              }
+            }}
+          />
         </>
       )}
     </div>
