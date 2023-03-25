@@ -4,8 +4,8 @@ specifiers:
   '@dqbd/tiktoken': ^1.0.2
   '@tabler/icons-react': ^2.11.0
   '@tailwindcss/typography': ^0.5.9
-  '@types/node': 18.15.7
-  '@types/react': 18.0.28
+  '@types/node': 18.15.8
+  '@types/react': 18.0.29
   '@types/react-dom': 18.0.11
   '@types/react-syntax-highlighter': ^15.5.6
   '@vercel/analytics': ^0.1.11
@@ -27,8 +27,8 @@ specifiers:
 dependencies:
   '@dqbd/tiktoken': 1.0.2
   '@tabler/icons-react': 2.11.0_react@18.2.0
-  '@types/node': 18.15.7
-  '@types/react': 18.0.28
+  '@types/node': 18.15.8
+  '@types/react': 18.0.29
   '@types/react-dom': 18.0.11
   '@vercel/analytics': 0.1.11_react@18.2.0
   eslint: 8.36.0
@@ -38,7 +38,7 @@ dependencies:
   openai: 3.2.1
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
-  react-markdown: 8.0.6_pmekkgnqduwlme35zpnqhenc34
+  react-markdown: 8.0.6_k4en7uapxoluuejoeg6o3ic2aa
   react-syntax-highlighter: 15.5.0_react@18.2.0
   remark-gfm: 3.0.1
   typescript: 5.0.2
@@ -339,8 +339,8 @@ packages:
     resolution: {integrity: sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==}
     dev: false
 
-  /@types/node/18.15.7:
-    resolution: {integrity: sha512-LFmUbFunqmBn26wJZgZPYZPrDR1RwGOu2v79Mgcka1ndO6V0/cwjivPTc4yoK6n9kmw4/ls1r8cLrvh2iMibFA==}
+  /@types/node/18.15.8:
+    resolution: {integrity: sha512-kzGNJZ57XEH7RdckxZ7wfRjB9hgZABF+NLgR1B2zogUvV0gmK0/60VYA4yb4oKZckPiiJlmmfpdqTfCN0VRX+Q==}
     dev: false
 
   /@types/prop-types/15.7.5:
@@ -349,17 +349,17 @@ packages:
   /@types/react-dom/18.0.11:
     resolution: {integrity: sha512-O38bPbI2CWtgw/OoQoY+BRelw7uysmXbWvw3nLWO21H1HSh+GOlqPuXshJfjmpNlKiiSDG9cc1JZAaMmVdcTlw==}
     dependencies:
-      '@types/react': 18.0.28
+      '@types/react': 18.0.29
     dev: false
 
   /@types/react-syntax-highlighter/15.5.6:
     resolution: {integrity: sha512-i7wFuLbIAFlabTeD2I1cLjEOrG/xdMa/rpx2zwzAoGHuXJDhSqp9BSfDlMHSh9JSuNfxHk9eEmMX6D55GiyjGg==}
     dependencies:
-      '@types/react': 18.0.28
+      '@types/react': 18.0.29
     dev: true
 
-  /@types/react/18.0.28:
-    resolution: {integrity: sha512-RD0ivG1kEztNBdoAK7lekI9M+azSnitIn85h4iOiaLjaTrMjzslhaqCGaI4IyCJ1RljWiLCEu4jyrLLgqxBTew==}
+  /@types/react/18.0.29:
+    resolution: {integrity: sha512-wXHktgUABxplw1+UnljseDq4+uztQyp2tlWZRIxHlpchsCFqiYkvaDS8JR7eKOQm8wziTH/el5qL7D6gYNkYcw==}
     dependencies:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.2
@@ -2765,7 +2765,7 @@ packages:
     resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
     dev: false
 
-  /react-markdown/8.0.6_pmekkgnqduwlme35zpnqhenc34:
+  /react-markdown/8.0.6_k4en7uapxoluuejoeg6o3ic2aa:
     resolution: {integrity: sha512-KgPWsYgHuftdx510wwIzpwf+5js/iHqBR+fzxefv8Khk3mFbnioF1bmL2idHN3ler0LMQmICKeDrWnZrX9mtbQ==}
     peerDependencies:
       '@types/react': '>=16'
@@ -2773,7 +2773,7 @@ packages:
     dependencies:
       '@types/hast': 2.3.4
       '@types/prop-types': 15.7.5
-      '@types/react': 18.0.28
+      '@types/react': 18.0.29
       '@types/unist': 2.0.6
       comma-separated-tokens: 2.0.3
       hast-util-whitespace: 2.0.1
